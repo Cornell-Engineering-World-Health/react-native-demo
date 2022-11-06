@@ -1,43 +1,25 @@
-import { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import Square from "./Square";
-
-const blue_red = ["#3344ff", "#ff4433"];
-const white_black = ["#fff", "#000"];
-
-var squaresArr = [];
-for (var i = 0; i < 100; i++) {
-  squaresArr.push(i);
-}
-
-const squares = squaresArr.map((id) => (
-  <Square on={id % 2 == 0} key={id} colors={blue_red} />
-));
+import { useEffect, useState } from "react";
+import { StyleSheet, View, TextInput } from "react-native";
 
 export default function Home() {
-  const [level, setLevel] = useState(1);
-  const [tools, showTools] = useState(false);
+  const [text, onChangeText] = useState("");
+  const [colorMode, setColorMode] = useState("#ff4433");
+
+  useEffect(() => {
+    setColorMode(text);
+  });
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.max} onPress={() => showTools(true)}>
-        <Text style={styles.max}>👹</Text>
-      </TouchableOpacity>
-      {squares.slice(0, level)}
-      <TouchableOpacity
-        style={styles.max}
-        onPress={() => setLevel(squares.length)}
-      >
-        <Text style={styles.max}>👹</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.more} onPress={() => setLevel(level + 1)}>
-        <Text style={styles.more}>➕</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.less} onPress={() => setLevel(level - 1)}>
-        <Text style={styles.less}>➖</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.min} onPress={() => setLevel(0)}>
-        <Text style={styles.min}>0️⃣</Text>
-      </TouchableOpacity>
+      <View style={styles.top}>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={text}
+          placeholder="type here"
+        />
+      </View>
+      <View style={{ backgroundColor: colorMode, flex: 1 }}></View>
     </View>
   );
 }
@@ -46,28 +28,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  more: {
-    fontSize: 50,
-    top: "45%",
-    position: "absolute",
-    alignSelf: "center",
+  top: {
+    backgroundColor: "#3344ff",
+    flex: 1,
   },
-  less: {
-    fontSize: 50,
-    top: "55%",
-    position: "absolute",
-    alignSelf: "center",
+  bottom: {
+    backgroundColor: "#ff4433",
+    flex: 1,
   },
-  min: {
-    fontSize: 50,
-    top: "65%",
-    position: "absolute",
-    alignSelf: "center",
-  },
-  max: {
-    fontSize: 50,
-    top: "35%",
-    position: "absolute",
-    alignSelf: "center",
+  input: {
+    flex: 1,
+    fontSize: 40,
+    textAlign: "center",
   },
 });
